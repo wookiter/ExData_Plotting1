@@ -1,0 +1,13 @@
+library(dplyr)
+#setwd("./EDA_Assignment/ExData_Plotting1")
+data <- read.table("household_power_consumption.txt",header=TRUE,sep=";",na.strings=("?"))
+data <- mutate (data, Date = as.Date(strptime (Date, "%d/%m/%Y")))
+data <- filter (data, Date > "2007-01-31" & Date < "2007-02-03")
+data <- mutate (data, DateTime = as.POSIXct(strptime(paste (factor(Date),Time),format="%Y-%m-%d %H:%M:%S")))
+
+plot (data$DateTime, data$Sub_metering_1, type="l",ylab="Energy sub metering",xlab="")
+lines (data$DateTime,data$Sub_metering_2, col="red")
+lines (data$DateTime,data$Sub_metering_3, col="blue")
+legend("topright",c("Sub_metering_1","Sub_metering_2", "Sub_metering_3"), col=c("black","red","blue"),lty=1,cex=0.8)
+dev.copy(png,file="plot3.png")
+dev.off()
